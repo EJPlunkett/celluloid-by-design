@@ -122,7 +122,7 @@
       justify-content: center;
       align-items: center;
       position: relative;
-      padding-top: 60px;
+      padding: 0;
       overflow: hidden;
       height: calc(100vh - 60px);
       height: calc(100dvh - 60px); /* Dynamic viewport height for mobile */
@@ -133,16 +133,14 @@
       border-radius: 24px;
       width: 90vw;
       max-width: 400px;
-      height: calc(100vh - 200px);
-      height: calc(100dvh - 200px); /* Dynamic viewport height for mobile */
-      max-height: calc(100vh - 200px);
-      max-height: calc(100dvh - 200px);
+      height: calc(100vh - 180px);
+      height: calc(100dvh - 180px); /* Dynamic viewport height for mobile */
+      max-height: calc(100vh - 180px);
+      max-height: calc(100dvh - 180px);
       position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      margin: auto;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
       padding: 16px;
       box-sizing: border-box;
       display: flex;
@@ -236,10 +234,14 @@
       display: none;
       flex-direction: column;
       align-items: center;
-      justify-content: flex-start;
+      justify-content: center;
       text-align: center;
-      padding: 20px 20px 0;
-      margin-top: -60px;
+      padding: 20px;
+      height: 100%;
+      width: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
     }
 
     #watchlist-link p {
@@ -381,7 +383,7 @@ Tap the popcorn to view your movies, or click below to explore more vibes.
 
     function swipeLeft(element) {
       const card = element.closest(".card");
-      card.style.transform = "translateX(-120vw) rotate(-20deg) scale(0.8)";
+      card.style.transform = "translate(-50%, -50%) translateX(-120vw) rotate(-20deg) scale(0.8)";
       card.style.opacity = "0";
       setTimeout(() => card.remove(), 600);
       showNextCard();
@@ -389,7 +391,7 @@ Tap the popcorn to view your movies, or click below to explore more vibes.
 
     function swipeRight(element) {
       const card = element.closest(".card");
-      card.style.transform = "translateX(120vw) rotate(20deg) scale(0.8)";
+      card.style.transform = "translate(-50%, -50%) translateX(120vw) rotate(20deg) scale(0.8)";
       card.style.opacity = "0";
       setTimeout(() => card.remove(), 600);
       showNextCard();
@@ -419,7 +421,7 @@ Tap the popcorn to view your movies, or click below to explore more vibes.
       const rotation = diffX * 0.1;
       const opacity = Math.max(0.3, 1 - Math.abs(diffX) / 300);
       
-      activeCard.style.transform = `translateX(${diffX}px) rotate(${rotation}deg)`;
+      activeCard.style.transform = `translate(-50%, -50%) translateX(${diffX}px) rotate(${rotation}deg)`;
       activeCard.style.opacity = opacity;
     }, false);
 
@@ -442,7 +444,7 @@ Tap the popcorn to view your movies, or click below to explore more vibes.
         }
       } else {
         // Snap back to center
-        activeCard.style.transform = 'translateX(0) rotate(0deg)';
+        activeCard.style.transform = 'translate(-50%, -50%) translateX(0) rotate(0deg)';
         activeCard.style.opacity = '1';
       }
     }, false);
