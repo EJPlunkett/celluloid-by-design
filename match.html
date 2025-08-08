@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Combined Options - Celluloid by Design</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background-color: #f6f5f3;
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+      font-family: Arial, sans-serif;
+      color: #000;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      padding: 10px 20px;
+      background: transparent;
+      position: relative;
+      z-index: 1100;
+    }
+
+    .nav-toggle {
+      position: fixed;
+      top: 13px;
+      left: 13px;
+      width: 36px;
+      height: 30px;
+      cursor: pointer;
+      z-index: 1200;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      background: transparent;
+      border-radius: 6px;
+      border: none;
+      padding: 0;
+    }
+
+    .nav-toggle span {
+      display: block;
+      height: 4px;
+      background: #000;
+      border-radius: 2px;
+      width: 100%;
+      transition: all 0.3s ease;
+    }
+
+    main.container {
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 0 20px 60px;
+      flex-grow: 1;
+      text-align: center;
+    }
+
+    .header-link {
+      display: block;
+      margin: 25px auto 10px auto;
+      width: 100%;
+      max-width: 480px;
+    }
+
+    .header-link img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .section-text {
+      font-weight: 300;
+      font-size: 16px;
+      line-height: 1.5;
+      margin: 0 0 30px 0;
+      color: #000;
+      text-align: center;
+    }
+
+    .dice-link {
+      display: block;
+      width: 80px;
+      margin: 20px auto 0;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    .dice-link img {
+      width: 100%;
+      height: auto;
+      user-select: none;
+      display: block;
+    }
+
+    .nav-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 320px;
+      height: 100vh;
+      background-color: #f6f5f3;
+      border: 10px solid #000;
+      border-radius: 0 20px 20px 0;
+      box-sizing: border-box;
+      box-shadow: none;
+      transform: translateX(calc(-100% - 20px));
+      transition: transform 0.3s ease;
+      z-index: 1050;
+      padding: 20px 20px 40px 40px;
+      overflow-y: auto;
+    }
+
+    .nav-overlay.open {
+      transform: translateX(0);
+    }
+
+    .nav-section-title {
+      height: 30px;
+      width: auto;
+      max-width: 280px;
+      margin-bottom: 16px;
+      cursor: pointer;
+      display: block;
+      object-fit: contain;
+    }
+    .nav-section-title.donate-menu {
+      height: 24px;
+    }
+
+    .nav-section-title:first-of-type {
+      margin-top: 20px;
+    }
+
+    .nav-list {
+      list-style: disc inside;
+      padding-left: 0;
+      margin-top: 0;
+      margin-bottom: 30px;
+      font-weight: 400;
+      font-size: 18px;
+      color: #000;
+    }
+
+    .nav-list li {
+      margin-bottom: 12px;
+    }
+
+    .nav-list li a {
+      color: #000;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .nav-list li a:hover {
+      text-decoration: underline;
+    }
+
+    footer {
+      font-size: 14px;
+      color: #000;
+      text-align: center;
+      padding: 20px;
+      background: #f6f5f3;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="nav-menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </header>
+
+  <main class="container">
+    <a href="vibes.html" class="header-link">
+      <img src="Vibes Header.png" alt="Vibes Header" />
+    </a>
+    <p class="section-text">Some vibe-related prompt or placeholder goes here.</p>
+
+    <a href="color.html" class="header-link">
+      <img src="Color Header.png" alt="Color Header" />
+    </a>
+    <p class="section-text">Some color-related prompt or placeholder goes here.</p>
+
+    <a href="words.html" class="header-link">
+      <img src="Words Header.png" alt="Words Header" />
+    </a>
+    <p class="section-text">Some word-related prompt or placeholder goes here.</p>
+
+    <p class="section-text">Feeling indecisive?</p>
+    <div class="dice-link" onclick="jiggleAndGo()">
+      <img src="Dice.png" alt="Dice Icon" id="diceIcon" />
+    </div>
+  </main>
+
+  <nav id="nav-menu" class="nav-overlay" aria-hidden="true">
+    <a href="match.html">
+      <img src="Match By.png" alt="Match By" class="nav-section-title" />
+    </a>
+    <ul class="nav-list">
+      <li><a href="vibes.html">Describe a Vibe</a></li>
+      <li><a href="color.html">Pick a Color</a></li>
+      <li><a href="words.html">Choose Keywords</a></li>
+      <li><a href="surprise.html">Surprise Me</a></li>
+    </ul>
+    <a href="watchlist.html">
+      <img src="Watchlist.png" alt="Watchlist" class="nav-section-title" />
+    </a>
+    <ul class="nav-list">
+      <li><a href="create.html">Create Account</a></li>
+      <li><a href="account.html">Sign In</a></li>
+    </ul>
+    <a href="about.html">
+      <img src="About.png" alt="About" class="nav-section-title" />
+    </a>
+    
+    <a href="donate.html">
+      <img src="donate menu.png" alt="Donate" class="nav-section-title donate-menu" />
+    </a>
+  </nav>
+
+  <footer>
+    <span class="credit">© 2025 Celluloid by Design</span>
+  </footer>
+
+  <script>
+    const navToggle = document.querySelector('.nav-toggle');
+    const navMenu = document.getElementById('nav-menu');
+
+    navToggle.addEventListener('click', () => {
+      const isOpen = navMenu.classList.toggle('open');
+      navToggle.setAttribute('aria-expanded', isOpen);
+      navMenu.setAttribute('aria-hidden', !isOpen);
+    });
+
+    function jiggleAndGo() {
+      const dice = document.getElementById('diceIcon');
+      dice.style.transition = 'transform 0.2s ease';
+      dice.style.transform = 'rotate(30deg)';
+      setTimeout(() => {
+        dice.style.transform = 'rotate(-30deg)';
+        setTimeout(() => {
+          dice.style.transform = 'rotate(0deg)';
+          setTimeout(() => {
+            window.location.href = 'surprise.html';
+          }, 200);
+        }, 200);
+      }, 200);
+    }
+  </script>
+</body>
+</html>

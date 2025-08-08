@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Swipe Cards - Celluloid by Design</title>
+  <style>
+    body {
+      margin: 0;
+      background-color: #f6f5f3;
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      overflow: hidden;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      padding: 10px 20px;
+      background: transparent;
+      position: relative;
+      z-index: 1100;
+      height: 60px;
+    }
+
+    .nav-toggle {
+      position: fixed;
+      top: 13px;
+      left: 13px;
+      width: 36px;
+      height: 30px;
+      cursor: pointer;
+      z-index: 1200;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      background: transparent;
+      border-radius: 6px;
+      border: none;
+      padding: 0;
+    }
+
+    .nav-toggle span {
+      display: block;
+      height: 4px;
+      background: #000;
+      border-radius: 2px;
+      width: 100%;
+      transition: all 0.3s ease;
+    }
+
+    .nav-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 320px;
+      height: 100vh;
+      background-color: #f6f5f3;
+      border: 10px solid #000;
+      border-radius: 0 20px 20px 0;
+      box-sizing: border-box;
+      transform: translateX(calc(-100% - 20px));
+      transition: transform 0.3s ease;
+      z-index: 1050;
+      padding: 20px 20px 40px 40px;
+      overflow-y: auto;
+    }
+
+    .nav-overlay.open {
+      transform: translateX(0);
+    }
+
+    .nav-section-title {
+      height: 30px;
+      width: auto;
+      max-width: 280px;
+      margin-bottom: 16px;
+      cursor: pointer;
+      display: block;
+      object-fit: contain;
+    }
+    .nav-section-title.donate-menu {
+      height: 24px;
+    }
+
+    .nav-section-title:first-of-type {
+      margin-top: 20px;
+    }
+
+    .nav-list {
+      list-style: disc inside;
+      padding-left: 0;
+      margin-top: 0;
+      margin-bottom: 30px;
+      font-weight: 400;
+      font-size: 18px;
+    }
+
+    .nav-list li {
+      margin-bottom: 12px;
+    }
+
+    .nav-list li a {
+      color: #000;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .nav-list li a:hover {
+      text-decoration: underline;
+    }
+
+    .main-wrapper {
+      flex-grow: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      padding-top: 60px;
+      overflow: hidden;
+    }
+
+    .card {
+      background-color: #000;
+      border-radius: 24px;
+      width: 90vw;
+      max-width: 400px;
+      max-height: calc(100vh - 120px);
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      margin: auto;
+      padding: 16px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.6s ease;
+      cursor: grab;
+    }
+
+    .card:active {
+      cursor: grabbing;
+    }
+
+    .card.swiping {
+      transition: none;
+    }
+
+    .card-inner {
+      flex: 1;
+      border-radius: 20px;
+      border: 2px solid #f6f5f3;
+      padding: 36px 24px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .card-content {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      flex-grow: 1;
+      gap: 24px;
+    }
+
+    .card h1, .card h2, .card h3, .card p {
+      color: #f6f5f3;
+      margin: 0;
+    }
+
+    .card h1 {
+      font-size: 1.8em;
+      font-weight: 700;
+    }
+
+    .card h2 {
+      font-size: 1.2em;
+      font-weight: 500;
+    }
+
+    .card h3 {
+      font-size: 1em;
+      font-style: italic;
+    }
+
+    .card p {
+      font-size: 1em;
+      font-weight: 700;
+      line-height: 1.6;
+    }
+
+    .icon-container {
+      display: flex;
+      justify-content: space-evenly;
+      align-items: center;
+      padding-top: 20px;
+    }
+
+    .icon-button {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background-color: #f6f5f3;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .icon-button img {
+      width: 28px;
+      height: 28px;
+    }
+
+    #watchlist-link {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      text-align: center;
+      padding: 20px 20px 0;
+      margin-top: -60px;
+    }
+
+    #watchlist-link p {
+      font-weight: bold;
+      font-size: 18px;
+      margin-bottom: 20px;
+      color: #000;
+    }
+
+    footer {
+      font-size: 14px;
+      color: #000;
+      text-align: center;
+      padding: 30px 20px 20px;
+      background: #f6f5f3;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="nav-menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </header>
+
+  <nav id="nav-menu" class="nav-overlay" aria-hidden="true">
+    <a href="match.html">
+      <img src="Match By.png" alt="Match By" class="nav-section-title" />
+    </a>
+    <ul class="nav-list">
+      <li><a href="vibes.html">Describe a Vibe</a></li>
+      <li><a href="color.html">Pick a Color</a></li>
+      <li><a href="words.html">Choose Keywords</a></li>
+      <li><a href="surprise.html">Surprise Me</a></li>
+    </ul>
+    <a href="watchlist.html">
+      <img src="Watchlist.png" alt="Watchlist" class="nav-section-title" />
+    </a>
+    <ul class="nav-list">
+      <li><a href="create.html">Create Account</a></li>
+      <li><a href="account.html">Sign In</a></li>
+    </ul>
+    <a href="about.html">
+      <img src="About.png" alt="About" class="nav-section-title" />
+    </a>
+    
+    <a href="donate.html">
+      <img src="donate menu.png" alt="Donate" class="nav-section-title donate-menu" />
+    </a>
+  </nav>
+
+  <main class="main-wrapper">
+    <div id="card-stack"></div>
+    <div id="watchlist-link" style="display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px 20px 40px; max-width: 480px; margin: 0 auto;">
+      <a href="watchlist.html" onclick="jigglePopcorn(event)">
+        <img src="popcorn.png" alt="Popcorn" id="popcornImage" style="width: 100px; height: auto; margin-bottom: 20px; cursor: pointer; transition: transform 0.3s ease;" />
+      </a>
+      <p style="font-weight: normal; font-size: 18px; margin-bottom: 50px; color: #000; line-height: 1.5; white-space: pre-wrap;">
+        Watchlist complete, curated by your vibe.
+Tap the popcorn to view your movies, or click below to explore more vibes.
+      </p>
+      <a href="match.html">
+        <img src="GoButton.png" alt="Go Button" style="width: 160px; height: auto; cursor: pointer;" />
+      </a>
+    </div>
+  </main>
+
+  <footer>
+    <span class="credit">© 2025 Celluloid by Design</span>
+  </footer>
+
+  <script>
+    const navToggle = document.querySelector('.nav-toggle');
+    const navMenu = document.getElementById('nav-menu');
+    navToggle.addEventListener('click', () => {
+      const isOpen = navMenu.classList.toggle('open');
+      navToggle.setAttribute('aria-expanded', isOpen);
+      navMenu.setAttribute('aria-hidden', !isOpen);
+    });
+
+    const sampleMovies = [
+  { title: "After Hours", year: "1985", decade: "1980s", palette: "Neon green and shadow grey", desc: "SoHo panic, late-night dread, fluorescent grit." },
+  { title: "The Panic in Needle Park", year: "1971", decade: "1970s", palette: "Overcast grey and subway tile white", desc: "Bleak Upper West Side realism with cold daylight." },
+  { title: "Desperately Seeking Susan", year: "1985", decade: "1980s", palette: "Coney Island teal and hairspray pink", desc: "Downtown club flair with scrappy magic hour glow." },
+  { title: "The Taking of Pelham One Two Three", year: "1974", decade: "1970s", palette: "Metro green and dirty yellow", desc: "Claustrophobic subway tension meets tan bureaucracy." },
+  { title: "Eyes of Laura Mars", year: "1978", decade: "1970s", palette: "Glam red and concrete black", desc: "Studio chic meets grimy Fashion District edge." },
+  { title: "Smithereens", year: "1982", decade: "1980s", palette: "Faded denim blue and trash can silver", desc: "Grimy punk aesthetics in pre-gentrified Lower East Side." },
+  { title: "C.H.U.D.", year: "1984", decade: "1980s", palette: "Sewer green and flashlight white", desc: "Subterranean horror under Manhattan's abandoned streets." },
+  { title: "Saturday Night Fever", year: "1977", decade: "1970s", palette: "Disco white and club neon", desc: "Glittering nightlife vibes from Brooklyn to Manhattan." },
+  { title: "Crooklyn", year: "1994", decade: "1970s", palette: "Orange soda and brownstone brick", desc: "Family warmth framed by Bed-Stuy's nostalgic tones." },
+  { title: "Maniac", year: "1980", decade: "1980s", palette: "Slasher red and alleyway grey", desc: "Grimy Times Square horror with nightmarish color." },
+  { title: "Midnight Cowboy", year: "1969", decade: "1960s", palette: "Dusty beige and neon motel pink", desc: "Desperate dreams and loneliness on 42nd Street." },
+  { title: "Frances Ha", year: "2012", decade: "2010s", palette: "Monochrome", desc: "Floating through a romanticized black-and-white New York." },
+  { title: "Party Girl", year: "1995", decade: "1990s", palette: "Librarian grey and rave yellow", desc: "Underground club energy and high-contrast fashion." },
+  { title: "Uncut Gems", year: "2019", decade: "2010s", palette: "Jeweler's gold and panic red", desc: "Diamond District chaos with cinematic tension." },
+  { title: "The Royal Tenenbaums", year: "2001", decade: "2000s", palette: "Vintage red tracksuit and tan brick", desc: "Whimsical symmetry and upper-crust melancholy." }
+];
+    let currentIndex = 0;
+    const maxCards = 15;
+    const cardStack = document.getElementById("card-stack");
+    const watchlistLink = document.getElementById("watchlist-link");
+
+    function createCard(movie) {
+      const card = document.createElement("div");
+      card.className = "card";
+      card.innerHTML = `
+        <div class="card-inner">
+          <div class="card-content">
+            <h1>${movie.title} (${movie.year})</h1>
+            <h2>${movie.decade}</h2>
+            <h3>${movie.palette}</h3>
+            <p>${movie.desc}</p>
+          </div>
+          <div class="icon-container">
+            <div class="icon-button" onclick="swipeLeft(this)">
+              <img src="cross.png" alt="Dislike" />
+            </div>
+            <div class="icon-button" onclick="swipeRight(this)">
+              <img src="heart.png" alt="Like" />
+            </div>
+          </div>
+        </div>`;
+      return card;
+    }
+
+    function showNextCard() {
+      if (currentIndex >= maxCards) {
+        watchlistLink.style.display = "flex";
+        return;
+      }
+      const nextMovie = sampleMovies[currentIndex % sampleMovies.length];
+      const card = createCard(nextMovie);
+      cardStack.prepend(card);
+      currentIndex++;
+    }
+
+    function swipeLeft(element) {
+      const card = element.closest(".card");
+      card.style.transform = "translateX(-120vw) rotate(-20deg) scale(0.8)";
+      card.style.opacity = "0";
+      setTimeout(() => card.remove(), 600);
+      showNextCard();
+    }
+
+    function swipeRight(element) {
+      const card = element.closest(".card");
+      card.style.transform = "translateX(120vw) rotate(20deg) scale(0.8)";
+      card.style.opacity = "0";
+      setTimeout(() => card.remove(), 600);
+      showNextCard();
+    }
+
+    showNextCard();
+
+    let touchStartX = 0;
+    let isDragging = false;
+    
+    cardStack.addEventListener('touchstart', function (e) {
+      touchStartX = e.changedTouches[0].screenX;
+      isDragging = true;
+      const activeCard = document.querySelector(".card");
+      if (activeCard) {
+        activeCard.classList.add('swiping');
+      }
+    }, false);
+
+    cardStack.addEventListener('touchmove', function (e) {
+      if (!isDragging) return;
+      const activeCard = document.querySelector(".card");
+      if (!activeCard) return;
+      
+      const touchCurrentX = e.changedTouches[0].screenX;
+      const diffX = touchCurrentX - touchStartX;
+      const rotation = diffX * 0.1;
+      const opacity = Math.max(0.3, 1 - Math.abs(diffX) / 300);
+      
+      activeCard.style.transform = `translateX(${diffX}px) rotate(${rotation}deg)`;
+      activeCard.style.opacity = opacity;
+    }, false);
+
+    cardStack.addEventListener('touchend', function (e) {
+      if (!isDragging) return;
+      isDragging = false;
+      
+      const touchEndX = e.changedTouches[0].screenX;
+      const diffX = touchEndX - touchStartX;
+      const activeCard = document.querySelector(".card");
+      if (!activeCard) return;
+
+      activeCard.classList.remove('swiping');
+
+      if (Math.abs(diffX) > 80) {
+        if (diffX > 0) {
+          swipeRight(activeCard.querySelector(".icon-button:last-child"));
+        } else {
+          swipeLeft(activeCard.querySelector(".icon-button:first-child"));
+        }
+      } else {
+        // Snap back to center
+        activeCard.style.transform = 'translateX(0) rotate(0deg)';
+        activeCard.style.opacity = '1';
+      }
+    }, false);
+
+    function jigglePopcorn(event) {
+      event.preventDefault();
+      const popcorn = document.getElementById('popcornImage');
+      popcorn.style.transform = 'rotate(15deg)';
+      setTimeout(() => {
+        popcorn.style.transform = 'rotate(-15deg)';
+        setTimeout(() => {
+          popcorn.style.transform = 'rotate(0deg)';
+          setTimeout(() => {
+            window.location.href = 'watchlist.html';
+          }, 200);
+        }, 200);
+      }, 200);
+    }
+  </script>
+</body>
+</html>

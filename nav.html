@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Navigation Overlay</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #fff;
+    }
+    /* Hamburger Icon */
+    .nav-toggle {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      width: 30px;
+      height: 25px;
+      cursor: pointer;
+      z-index: 1001;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      background: transparent;
+      border: none;
+    }
+    .nav-toggle span {
+      display: block;
+      height: 4px;
+      background: #000;
+      border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+    /* Navigation Overlay */
+    .nav-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 320px;
+      height: 100vh;
+      background-color: #f6f5f3;
+      border: 10px solid #000; /* outer black border */
+      border-radius: 0 20px 20px 0;
+      box-sizing: border-box;
+      box-shadow: 0 0 0 3px #000 inset; /* inner black border */
+      transform: translateX(-100%);
+      transition: transform 0.3s ease;
+      z-index: 1000;
+      padding: 40px 20px;
+      overflow-y: auto;
+    }
+    .nav-overlay.open {
+      transform: translateX(0);
+    }
+    /* Section Titles as images */
+    .nav-section-title {
+      width: 100%;
+      max-width: 280px;
+      height: auto;
+      margin-bottom: 16px;
+      cursor: pointer;
+    }
+    /* Lists */
+    .nav-list {
+      list-style: disc inside;
+      padding-left: 0;
+      margin-top: 0;
+      margin-bottom: 30px;
+      font-weight: 400;
+      font-size: 18px;
+    }
+    .nav-list li {
+      margin-bottom: 12px;
+    }
+    .nav-list li a {
+      color: #000;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .nav-list li a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Hamburger toggle button -->
+  <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="nav-menu">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+
+  <!-- Navigation Overlay -->
+  <nav id="nav-menu" class="nav-overlay" aria-hidden="true">
+    <!-- Section: Match by -->
+    <img src="Match By.png" alt="Match By" class="nav-section-title" />
+    <ul class="nav-list">
+      <li><a href="/vibe-describe">Vibe Describe</a></li>
+      <li><a href="/color">Color</a></li>
+      <li><a href="/keyword">Keyword</a></li>
+      <li><a href="/wildcard">Wildcard</a></li>
+    </ul>
+
+    <!-- Section: Watchlist -->
+    <img src="Watchlist.png" alt="Watchlist" class="nav-section-title" />
+    <ul class="nav-list">
+      <li><a href="/sign-in">Sign In</a></li>
+    </ul>
+
+    <!-- Section: About -->
+    <img src="About.png" alt="About" class="nav-section-title" />
+  </nav>
+
+  <script>
+    const navToggle = document.querySelector('.nav-toggle');
+    const navMenu = document.getElementById('nav-menu');
+
+    navToggle.addEventListener('click', () => {
+      const isOpen = navMenu.classList.toggle('open');
+      navToggle.setAttribute('aria-expanded', isOpen);
+      navMenu.setAttribute('aria-hidden', !isOpen);
+    });
+  </script>
+
+</body>
+</html>

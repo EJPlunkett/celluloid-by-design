@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Words - Celluloid by Design</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background-color: #f6f5f3;
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+      font-family: Arial, sans-serif;
+      color: #000;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      padding: 10px 20px;
+      background: transparent;
+      position: relative;
+      z-index: 1100;
+    }
+
+    .nav-toggle {
+      position: fixed;
+      top: 13px;
+      left: 13px;
+      width: 36px;
+      height: 30px;
+      cursor: pointer;
+      z-index: 1200;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      background: transparent;
+      border-radius: 6px;
+      border: none;
+      padding: 0;
+    }
+
+    .nav-toggle span {
+      display: block;
+      height: 4px;
+      background: #000;
+      border-radius: 2px;
+      width: 100%;
+      transition: all 0.3s ease;
+    }
+
+    main.container {
+      max-width: 480px;
+      margin: 0 auto 40px;
+      padding: 0 20px;
+      flex-grow: 1;
+      text-align: center;
+      box-sizing: border-box;
+    }
+
+    .header-words {
+      display: block;
+      max-width: 480px;
+      width: 100%;
+      height: auto;
+      margin: 25px auto 10px auto;
+    }
+
+    .body-text {
+      font-weight: 300;
+      font-size: 16px;
+      line-height: 1.5;
+      margin: 0 0 15px 0;
+      color: #000;
+      white-space: pre-wrap;
+      text-align: center;
+    }
+
+    .tag-input-container {
+      border: 2px solid #000;
+      border-radius: 15px;
+      padding: 8px 12px;
+      min-height: 48px;
+      max-width: 480px;
+      margin: 20px auto 10px auto;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px;
+      box-sizing: border-box;
+      background: #fff;
+      cursor: text;
+    }
+
+    .tag-pill {
+      background: #000;
+      color: #fff;
+      padding: 6px 14px;
+      border-radius: 9999px;
+      font-size: 14px;
+      user-select: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .tag-pill span {
+      cursor: pointer;
+      font-weight: bold;
+      user-select: none;
+    }
+
+    .tag-input {
+      flex: 1;
+      border: none;
+      font-size: 16px;
+      padding: 6px 8px;
+      outline: none;
+      font-style: italic;
+      color: #666;
+      min-width: 140px;
+    }
+
+    .selected-tags-text {
+      white-space: normal;
+      word-wrap: break-word;
+      margin-top: 6px;
+      font-size: 14px;
+      color: #000;
+      min-height: 18px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .word-list {
+      max-width: 480px;
+      margin: 0 auto 30px auto;
+      padding-left: 0;
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+      box-sizing: border-box;
+    }
+
+    .word-list li {
+      margin: 0;
+    }
+
+    .word-pill {
+      background: #000;
+      color: #fff;
+      padding: 6px 14px;
+      border-radius: 9999px;
+      font-size: 14px;
+      cursor: pointer;
+      user-select: none;
+      transition: background-color 0.2s ease;
+      display: inline-block;
+    }
+
+    .word-pill:hover {
+      background: #444;
+    }
+
+    .word-pill.selected {
+      background: #666;
+      cursor: default;
+    }
+
+    .notification {
+      max-width: 480px;
+      margin: 10px auto 0 auto;
+      color: #000;
+      font-weight: normal;
+      font-size: 14px;
+      text-align: center;
+      display: none;
+    }
+
+    .submit-button {
+      margin: 30px auto 0 auto;
+      width: 200px;
+      height: 50px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      display: block;
+    }
+
+    .submit-button img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: contain;
+    }
+
+    /* Navigation styling copied from color.html */
+    .nav-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 320px;
+      height: 100vh;
+      background-color: #f6f5f3;
+      border: 10px solid #000;
+      border-radius: 0 20px 20px 0;
+      box-sizing: border-box;
+      box-shadow: none;
+      transform: translateX(calc(-100% - 20px));
+      transition: transform 0.3s ease;
+      z-index: 1050;
+      padding: 20px 20px 40px 40px;
+      overflow-y: auto;
+    }
+
+    .nav-overlay.open {
+      transform: translateX(0);
+    }
+
+    .nav-section-title {
+      height: 30px;
+      width: auto;
+      max-width: 280px;
+      margin-bottom: 16px;
+      cursor: pointer;
+      display: block;
+      object-fit: contain;
+    }
+    .nav-section-title.donate-menu {
+      height: 24px;
+    }
+
+    .nav-section-title:first-of-type {
+      margin-top: 20px;
+    }
+
+    .nav-list {
+      list-style: disc inside;
+      padding-left: 0;
+      margin-top: 0;
+      margin-bottom: 30px;
+      font-weight: 400;
+      font-size: 18px;
+    }
+
+    .nav-list li {
+      margin-bottom: 12px;
+    }
+
+    .nav-list li a {
+      color: #000;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .nav-list li a:hover {
+      text-decoration: underline;
+    }
+
+    footer {
+      font-size: 14px;
+      color: #000;
+      text-align: center;
+      padding: 20px;
+      user-select: none;
+      background: #f6f5f3;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="nav-menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </header>
+
+  <main class="container">
+    <img src="Words Header.png" alt="Words Header" class="header-words" />
+
+    <p class="body-text">
+      Select or type up to 10 words to describe your vibe.
+    </p>
+
+    <div class="tag-input-container" tabindex="0" aria-label="Word selector input area" id="tagInputContainer">
+      <input type="text" id="tagInput" class="tag-input" placeholder="Type or select words..." aria-describedby="notification" aria-autocomplete="list" autocomplete="off" />
+      <div id="selectedTagsText" class="selected-tags-text" aria-live="polite" aria-atomic="true"></div>
+    </div>
+
+    <ul class="word-list" id="wordList" aria-label="Available words"></ul>
+
+    <div id="notification" class="notification" role="alert" aria-live="assertive"></div>
+
+    <a href="cards.html">
+      <img src="Submit Button.png" alt="Submit Button" style="width: 150px; display: block; margin: 20px auto 0;" />
+    </a>
+  </main>
+
+  <nav id="nav-menu" class="nav-overlay" aria-hidden="true">
+    <a href="match.html">
+      <img src="Match By.png" alt="Match By" class="nav-section-title" />
+    </a>
+    <ul class="nav-list">
+      <li><a href="vibes.html">Describe a Vibe</a></li>
+      <li><a href="color.html">Pick a Color</a></li>
+      <li><a href="words.html">Choose Keywords</a></li>
+      <li><a href="surprise.html">Surprise Me</a></li>
+    </ul>
+
+    <a href="watchlist.html">
+      <img src="Watchlist.png" alt="Watchlist" class="nav-section-title" />
+    </a>
+    <ul class="nav-list">
+      <li><a href="create.html">Create Account</a></li>
+      <li><a href="account.html">Sign In</a></li>
+    </ul>
+
+    <a href="about.html">
+      <img src="About.png" alt="About" class="nav-section-title" />
+    </a>
+    
+    <a href="donate.html">
+      <img src="donate menu.png" alt="Donate" class="nav-section-title donate-menu" />
+    </a>
+  </nav>
+
+  <footer>
+    <span class="credit">© 2025 Celluloid by Design</span>
+  </footer>
+
+  <script>
+    const navToggle = document.querySelector('.nav-toggle');
+    const navMenu = document.getElementById('nav-menu');
+    const tagInput = document.getElementById('tagInput');
+    const tagInputContainer = document.getElementById('tagInputContainer');
+    const wordList = document.getElementById('wordList');
+    const notification = document.getElementById('notification');
+    const selectedTagsText = document.getElementById('selectedTagsText');
+
+    const maxTags = 10;
+
+    const words = [
+  // Decade Tags
+  "1950s", "1960s", "1970s", "1980s", "1990s", "2000s",
+
+  // Core Aesthetic Descriptors
+  "grainy", "golden", "smokey", "gritty", "pastel", "harsh", "electric", "minimal",
+  "muted", "bloody", "neon", "raw", "glossy", "saturated", "rain-soaked", "shadowy",
+  "cold", "dark", "bold", "bright", "soft", "vivid", "colorful", "warm", "worn",
+  "sharp", "surreal", "textured", "vibrant", "stylized", "hazy", "monochrome",
+  "industrial", "eerie", "nostalgic", "cozy",
+
+  // Conceptual / Contextual Adjectives
+  "corporate", "glamorous", "noir", "edgy", "geometric", "polished", "dingy", 
+  "decaying", "murky", "exaggerated", "editorial", "dusty", "seedy", "overcast",
+  "couture", "airy", "campy", "avant-garde", "symmetrical", "festive", "midcentury",
+
+  // NYC Urban Texture & Setting Terms
+  "loft", "stoop-side", "tenement", "brownstone", "concrete", "cluttered",
+  "chalky", "fluorescent", "velvety", "metallic", "wintry", "payphone", "bodega", "subway-platform"
+];
+
+    let selectedTags = [];
+
+    function renderWordList() {
+      wordList.innerHTML = '';
+      words.forEach(word => {
+        const pill = document.createElement('li');
+        pill.textContent = word;
+        pill.className = 'word-pill';
+        pill.tabIndex = 0;
+        pill.setAttribute('role', 'button');
+
+        if (selectedTags.length >= maxTags && !selectedTags.includes(word)) {
+          pill.classList.add('disabled');
+          pill.setAttribute('aria-disabled', 'true');
+          pill.tabIndex = -1;
+        }
+
+        pill.addEventListener('click', () => addTag(word));
+        pill.addEventListener('keydown', e => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            addTag(word);
+          }
+        });
+
+        if (selectedTags.includes(word)) {
+          pill.classList.add('selected');
+        }
+
+        wordList.appendChild(pill);
+      });
+    }
+
+    function addTag(word) {
+      if (selectedTags.length >= maxTags) {
+        notification.textContent = "You've reached the maximum of 10 words. Please submit.";
+        notification.style.display = 'block';
+        return;
+      }
+      if (!selectedTags.includes(word)) {
+        selectedTags.push(word);
+        notification.textContent = "";
+        notification.style.display = 'none';
+        updateTagsUI();
+      }
+    }
+
+    function removeTag(word) {
+      selectedTags = selectedTags.filter(t => t !== word);
+      notification.textContent = "";
+      notification.style.display = 'none';
+      updateTagsUI();
+    }
+
+    function updateTagsUI() {
+      tagInputContainer.querySelectorAll('.tag-pill').forEach(el => el.remove());
+
+      selectedTags.forEach(tag => {
+        const pill = document.createElement('span');
+        pill.className = 'tag-pill';
+        pill.textContent = tag;
+
+        const removeBtn = document.createElement('span');
+        removeBtn.textContent = '×';
+        removeBtn.setAttribute('role', 'button');
+        removeBtn.setAttribute('aria-label', `Remove ${tag}`);
+        removeBtn.tabIndex = 0;
+        removeBtn.style.cursor = 'pointer';
+        removeBtn.style.marginLeft = '8px';
+
+        removeBtn.addEventListener('click', () => removeTag(tag));
+        removeBtn.addEventListener('keydown', e => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            removeTag(tag);
+          }
+        });
+
+        pill.appendChild(removeBtn);
+        tagInputContainer.insertBefore(pill, tagInput);
+      });
+
+      tagInput.value = '';
+      selectedTagsText.textContent = selectedTags.join(', ');
+      renderWordList();
+    }
+
+    tagInput.addEventListener('keydown', e => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        const inputVal = tagInput.value.trim().toLowerCase();
+        if (inputVal && !selectedTags.includes(inputVal)) {
+          if (selectedTags.length >= maxTags) {
+            notification.textContent = "You've reached the maximum of 10 words. Please submit.";
+            notification.style.display = 'block';
+            return;
+          }
+          selectedTags.push(inputVal);
+          notification.textContent = "";
+          notification.style.display = 'none';
+          updateTagsUI();
+        }
+      }
+    });
+
+    tagInputContainer.addEventListener('click', () => tagInput.focus());
+
+    renderWordList();
+
+    navToggle.addEventListener('click', () => {
+      const isOpen = navMenu.classList.toggle('open');
+      navToggle.setAttribute('aria-expanded', isOpen);
+      navMenu.setAttribute('aria-hidden', !isOpen);
+    });
+  </script>
+</body>
+</html>
