@@ -1,0 +1,581 @@
+function toggleExpand(header) {
+      const details = header.nextElementSibling;
+      const isExpanded = header.classList.contains('expanded');
+      
+      if (isExpanded) {
+        // Collapse
+        header.classList.remove('expanded');
+        details.classList.remove('expanded');
+      } else {
+        // Expand
+        header.classList.add('expanded');
+        details.classList.add('expanded');
+      }
+    }<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Watchlist - Celluloid by Design</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background-color: #f6f5f3;
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+    }
+    body {
+      font-family: Arial, sans-serif;
+      color: #000;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      position: relative;
+    }
+    header {
+      display: flex;
+      align-items: center;
+      padding: 10px 20px;
+      background: transparent;
+      position: relative;
+      z-index: 1100;
+    }
+    /* Hamburger toggle button */
+    .nav-toggle {
+      position: fixed;
+      top: 13px;
+      left: 13px;
+      width: 36px;
+      height: 30px;
+      cursor: pointer;
+      z-index: 1200;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      background: transparent;
+      border-radius: 6px;
+      box-shadow: none;
+      border: none;
+      padding: 0;
+    }
+    .nav-toggle span {
+      display: block;
+      height: 4px;
+      background: #000;
+      border-radius: 2px;
+      width: 100%;
+      transition: all 0.3s ease;
+    }
+    main.container {
+      max-width: 480px;
+      margin: 0 auto 40px;
+      padding: 0 20px;
+      flex-grow: 1;
+      text-align: center;
+    }
+    .header-image {
+      display: block;
+      max-width: 480px;
+      width: 100%;
+      height: auto;
+      margin: 25px auto 0px auto;
+    }
+    .body-text {
+      font-weight: 300;
+      font-size: 16px;
+      line-height: 1.5;
+      margin: 0 0 30px 0;
+      color: #000;
+      white-space: pre-wrap;
+      text-align: center;
+    }
+
+    /* Watchlist Styles */
+    .watchlist-section {
+      margin-bottom: 40px;
+      text-align: left;
+    }
+    .section-header {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 8px;
+      color: #000;
+      border-bottom: 2px solid #000;
+      padding-bottom: 5px;
+    }
+    .input-detail {
+      font-size: 16px;
+      font-style: italic;
+      color: #666;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .color-circle {
+      height: 1em;
+      width: 1em;
+      border-radius: 4px;
+      display: inline-block;
+    }
+    .movie-list {
+      list-style: disc inside;
+      padding-left: 0;
+      margin: 0;
+    }
+    .movie-list li {
+      margin-bottom: 10px;
+      font-size: 16px;
+      line-height: 1.4;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .movie-header {
+      padding: 12px 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #fff;
+      transition: background-color 0.2s ease;
+    }
+    .movie-header:hover {
+      background: #f8f8f8;
+    }
+    .movie-basic-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex: 1;
+    }
+    .expand-icon {
+      font-size: 14px;
+      transition: transform 0.3s ease;
+      color: #666;
+    }
+    .movie-header.expanded .expand-icon {
+      transform: rotate(180deg);
+    }
+    .movie-details {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+      background: #f9f9f9;
+      border-top: 1px solid #eee;
+    }
+    .movie-details.expanded {
+      max-height: 200px;
+    }
+    .movie-details-content {
+      padding: 16px;
+      font-style: italic;
+      color: #555;
+      line-height: 1.5;
+    }
+    .movie-title {
+      font-weight: 500;
+      color: #000;
+      text-decoration: none;
+    }
+    .movie-title:hover {
+      text-decoration: underline;
+    }
+    .movie-year {
+      color: #666;
+      font-weight: normal;
+    }
+    .letterboxd-link {
+      color: #000;
+      text-decoration: none;
+      font-weight: 500;
+      margin-left: 8px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .letterboxd-link:hover {
+      text-decoration: underline;
+    }
+    .letterboxd-icon {
+      height: 16px;
+      width: auto;
+      display: inline-block;
+    }
+    .empty-state {
+      text-align: center;
+      color: #666;
+      font-style: italic;
+      margin: 40px 0;
+      font-size: 18px;
+    }
+
+    /* Navigation Overlay Styles */
+    .nav-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 320px;
+      height: 100vh;
+      background-color: #f6f5f3;
+      border: 10px solid #000;
+      border-radius: 0 20px 20px 0;
+      box-sizing: border-box;
+      box-shadow: none;
+      transform: translateX(calc(-100% - 20px));
+      transition: transform 0.3s ease;
+      z-index: 1050;
+      padding: 20px 20px 40px 40px;
+      overflow-y: auto;
+    }
+    .nav-overlay.open {
+      transform: translateX(0);
+    }
+    .nav-section-title {
+      height: 30px;
+      width: auto;
+      max-width: 280px;
+      margin-bottom: 16px;
+      cursor: pointer;
+      display: block;
+      object-fit: contain;
+    }
+    .nav-section-title.donate-menu {
+      height: 24px;
+    }
+    .nav-section-title:first-of-type {
+      margin-top: 20px;
+    }
+    .nav-list {
+      list-style: disc inside;
+      padding-left: 0;
+      margin-top: 0;
+      margin-bottom: 30px;
+      font-weight: 400;
+      font-size: 18px;
+    }
+    .nav-list li {
+      margin-bottom: 12px;
+    }
+    .nav-list li a {
+      color: #000;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .nav-list li a:hover {
+      text-decoration: underline;
+    }
+
+    /* Footer */
+    footer {
+      font-size: 14px;
+      color: #000;
+      text-align: center;
+      padding: 20px;
+      user-select: none;
+      background: #f6f5f3;
+      font-style: italic;
+      position: static;
+      width: auto;
+      bottom: auto;
+      left: auto;
+      opacity: 1;
+      pointer-events: auto;
+      transition: none;
+      z-index: auto;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="nav-menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </header>
+
+  <main class="container">
+    <img src="movies.png" alt="Header" class="header-image" />
+
+    <p class="body-text">
+      Your personalized watchlist of NYC films matched to your aesthetic preferences. Each section shows movies you've liked based on different inputs.
+    </p>
+
+    <!-- Color Matches Section -->
+    <div class="watchlist-section">
+      <h2 class="section-header">Color Matches</h2>
+      <div class="input-detail">
+        Based on: 
+        <div class="color-circle" style="background-color: #4B0082;"></div>
+      </div>
+      <ul class="movie-list">
+        <li>
+          <div class="movie-header" onclick="toggleExpand(this)">
+            <div class="movie-basic-info">
+              <span class="movie-title">Requiem for a Dream</span> 
+              <span class="movie-year">(2000)</span>
+              <a href="https://letterboxd.com/film/requiem-for-a-dream/" class="letterboxd-link" target="_blank" onclick="event.stopPropagation()">
+                <img src="letterboxd.png" alt="Letterboxd" class="letterboxd-icon" />
+                Letterboxd
+              </a>
+            </div>
+            <span class="expand-icon">▼</span>
+          </div>
+          <div class="movie-details">
+            <div class="movie-details-content">
+              A harrowing descent into addiction set against the gritty backdrop of Brooklyn. The film's visual palette shifts from warm, hopeful tones to cold, desaturated colors as dreams crumble into nightmares.
+            </div>
+          </div>
+        </li>
+        <li>
+          <div class="movie-header" onclick="toggleExpand(this)">
+            <div class="movie-basic-info">
+              <span class="movie-title">The Royal Tenenbaums</span> 
+              <span class="movie-year">(2001)</span>
+              <a href="https://letterboxd.com/film/the-royal-tenenbaums/" class="letterboxd-link" target="_blank" onclick="event.stopPropagation()">
+                <img src="letterboxd.png" alt="Letterboxd" class="letterboxd-icon" />
+                Letterboxd
+              </a>
+            </div>
+            <span class="expand-icon">▼</span>
+          </div>
+          <div class="movie-details">
+            <div class="movie-details-content">
+              Whimsical Upper West Side aesthetics with perfectly symmetrical compositions. Rich burgundy and forest green palettes create a nostalgic, storybook atmosphere in this tale of family dysfunction.
+            </div>
+          </div>
+        </li>
+        <li>
+          <div class="movie-header" onclick="toggleExpand(this)">
+            <div class="movie-basic-info">
+              <span class="movie-title">Midnight Cowboy</span> 
+              <span class="movie-year">(1969)</span>
+              <a href="https://letterboxd.com/film/midnight-cowboy/" class="letterboxd-link" target="_blank" onclick="event.stopPropagation()">
+                <img src="letterboxd.png" alt="Letterboxd" class="letterboxd-icon" />
+                Letterboxd
+              </a>
+            </div>
+            <span class="expand-icon">▼</span>
+          </div>
+          <div class="movie-details">
+            <div class="movie-details-content">
+              Gritty 42nd Street in its seedy heyday, captured in dusty yellows and neon pinks. The film's aesthetic perfectly embodies the loneliness and desperation of 1960s Times Square.
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Vibe Matches Section -->
+    <div class="watchlist-section">
+      <h2 class="section-header">Vibe Matches</h2>
+      <div class="input-detail">Based on: "Gritty urban romance with neon lights"</div>
+      <ul class="movie-list">
+        <li>
+          <div class="movie-header" onclick="toggleExpand(this)">
+            <div class="movie-basic-info">
+              <span class="movie-title">Her</span> 
+              <span class="movie-year">(2013)</span>
+              <a href="https://letterboxd.com/film/her/" class="letterboxd-link" target="_blank" onclick="event.stopPropagation()">
+                <img src="letterboxd.png" alt="Letterboxd" class="letterboxd-icon" />
+                Letterboxd
+              </a>
+            </div>
+            <span class="expand-icon">▼</span>
+          </div>
+          <div class="movie-details">
+            <div class="movie-details-content">
+              Soft, warm tones and intimate urban spaces capture the loneliness of modern LA life. The aesthetic balances technological coldness with human warmth through carefully crafted lighting and color palettes.
+            </div>
+          </div>
+        </li>
+        <li>
+          <div class="movie-header" onclick="toggleExpand(this)">
+            <div class="movie-basic-info">
+              <span class="movie-title">Lost in Translation</span> 
+              <span class="movie-year">(2003)</span>
+              <a href="https://letterboxd.com/film/lost-in-translation/" class="letterboxd-link" target="_blank" onclick="event.stopPropagation()">
+                <img src="letterboxd.png" alt="Letterboxd" class="letterboxd-icon" />
+                Letterboxd
+              </a>
+            </div>
+            <span class="expand-icon">▼</span>
+          </div>
+          <div class="movie-details">
+            <div class="movie-details-content">
+              Dreamy Tokyo neon reflected in hotel windows, creating an ethereal atmosphere of isolation and connection. Pink and blue tones dominate this meditation on loneliness in a foreign city.
+            </div>
+          </div>
+        </li>
+        <li>
+          <div class="movie-header" onclick="toggleExpand(this)">
+            <div class="movie-basic-info">
+              <span class="movie-title">Taxi Driver</span> 
+              <span class="movie-year">(1976)</span>
+              <a href="https://letterboxd.com/film/taxi-driver/" class="letterboxd-link" target="_blank" onclick="event.stopPropagation()">
+                <img src="letterboxd.png" alt="Letterboxd" class="letterboxd-icon" />
+                Letterboxd
+              </a>
+            </div>
+            <span class="expand-icon">▼</span>
+          </div>
+          <div class="movie-details">
+            <div class="movie-details-content">
+              Steam rising from manholes, neon-lit streets, and the gritty underbelly of 1970s Manhattan. Yellow cabs cut through red-tinted nightscapes in this iconic vision of urban decay.
+            </div>
+          </div>
+        </li>
+      </ul>
+      
+      <div class="input-detail">Based on: "Surprise Me" random selection</div>
+      <ul class="movie-list">
+        <li>
+          <div class="movie-header" onclick="toggleExpand(this)">
+            <div class="movie-basic-info">
+              <span class="movie-title">Birdman</span> 
+              <span class="movie-year">(2014)</span>
+              <a href="https://letterboxd.com/film/birdman/" class="letterboxd-link" target="_blank" onclick="event.stopPropagation()">
+                <img src="letterboxd.png" alt="Letterboxd" class="letterboxd-icon" />
+                Letterboxd
+              </a>
+            </div>
+            <span class="expand-icon">▼</span>
+          </div>
+          <div class="movie-details">
+            <div class="movie-details-content">
+              Claustrophobic backstage Broadway corridors contrast with soaring aerial shots of Times Square. The film's continuous-take aesthetic creates a dreamlike, surreal atmosphere.
+            </div>
+          </div>
+        </li>
+        <li>
+          <div class="movie-header" onclick="toggleExpand(this)">
+            <div class="movie-basic-info">
+              <span class="movie-title">Frances Ha</span> 
+              <span class="movie-year">(2012)</span>
+              <a href="https://letterboxd.com/film/frances-ha/" class="letterboxd-link" target="_blank" onclick="event.stopPropagation()">
+                <img src="letterboxd.png" alt="Letterboxd" class="letterboxd-icon" />
+                Letterboxd
+              </a>
+            </div>
+            <span class="expand-icon">▼</span>
+          </div>
+          <div class="movie-details">
+            <div class="movie-details-content">
+              Black and white cinematography captures the romance of contemporary Brooklyn and Manhattan. The monochrome aesthetic gives modern New York a timeless, French New Wave quality.
+            </div>
+          </div>
+        </li>
+        <li>
+          <div class="movie-header" onclick="toggleExpand(this)">
+            <div class="movie-basic-info">
+              <span class="movie-title">Do the Right Thing</span> 
+              <span class="movie-year">(1989)</span>
+              <a href="https://letterboxd.com/film/do-the-right-thing/" class="letterboxd-link" target="_blank" onclick="event.stopPropagation()">
+                <img src="letterboxd.png" alt="Letterboxd" class="letterboxd-icon" />
+                Letterboxd
+              </a>
+            </div>
+            <span class="expand-icon">▼</span>
+          </div>
+          <div class="movie-details">
+            <div class="movie-details-content">
+              Sweltering Bed-Stuy summer captured in saturated reds, oranges, and yellows. The heat-soaked color palette perfectly mirrors the rising tensions in this Brooklyn neighborhood.
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Keyword Matches Section -->
+    <div class="watchlist-section">
+      <h2 class="section-header">Keyword Matches</h2>
+      <div class="input-detail">Based on: "minimalist, architectural, contemplative"</div>
+      <ul class="movie-list">
+        <li>
+          <div class="movie-header" onclick="toggleExpand(this)">
+            <div class="movie-basic-info">
+              <span class="movie-title">The Apartment</span> 
+              <span class="movie-year">(1960)</span>
+              <a href="https://letterboxd.com/film/the-apartment/" class="letterboxd-link" target="_blank" onclick="event.stopPropagation()">
+                <img src="letterboxd.png" alt="Letterboxd" class="letterboxd-icon" />
+                Letterboxd
+              </a>
+            </div>
+            <span class="expand-icon">▼</span>
+          </div>
+          <div class="movie-details">
+            <div class="movie-details-content">
+              Crisp black and white cinematography captures the geometric beauty of corporate Manhattan. Clean lines and minimal compositions reflect the sterile corporate world of 1960s office culture.
+            </div>
+          </div>
+        </li>
+        <li>
+          <div class="movie-header" onclick="toggleExpand(this)">
+            <div class="movie-basic-info">
+              <span class="movie-title">Inside Llewyn Davis</span> 
+              <span class="movie-year">(2013)</span>
+              <a href="https://letterboxd.com/film/inside-llewyn-davis/" class="letterboxd-link" target="_blank" onclick="event.stopPropagation()">
+                <img src="letterboxd.png" alt="Letterboxd" class="letterboxd-icon" />
+                Letterboxd
+              </a>
+            </div>
+            <span class="expand-icon">▼</span>
+          </div>
+          <div class="movie-details">
+            <div class="movie-details-content">
+              Muted earth tones and winter grays paint a melancholic portrait of 1960s Greenwich Village. The folk scene's intimate coffee houses are rendered in warm, amber-lit interiors.
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </main>
+
+  <nav id="nav-menu" class="nav-overlay" aria-hidden="true">
+    <a href="match.html">
+      <img src="Match By.png" alt="Match By" class="nav-section-title" />
+    </a>
+    <ul class="nav-list">
+      <li><a href="vibes.html">Describe a Vibe</a></li>
+      <li><a href="color.html">Pick a Color</a></li>
+      <li><a href="words.html">Choose Keywords</a></li>
+      <li><a href="surprise.html">Surprise Me</a></li>
+    </ul>
+
+    <a href="watchlist.html">
+      <img src="Watchlist.png" alt="Watchlist" class="nav-section-title" />
+    </a>
+    <ul class="nav-list">
+      <li><a href="create.html">Create Account</a></li>
+      <li><a href="account.html">Sign In</a></li>
+    </ul>
+
+    <a href="about.html">
+      <img src="About.png" alt="About" class="nav-section-title" />
+    </a>
+    
+    <a href="donate.html">
+      <img src="donate menu.png" alt="Donate" class="nav-section-title donate-menu" />
+    </a>
+  </nav>
+
+  <footer>
+    <span class="credit">© 2025 Celluloid by Design</span>
+  </footer>
+
+  <script>
+    const navToggle = document.querySelector('.nav-toggle');
+    const navMenu = document.getElementById('nav-menu');
+
+    // Navigation toggle logic
+    navToggle.addEventListener('click', () => {
+      const isOpen = navMenu.classList.toggle('open');
+      navToggle.setAttribute('aria-expanded', isOpen);
+      navMenu.setAttribute('aria-hidden', !isOpen);
+    });
+  </script>
+</body>
+</html>

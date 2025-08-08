@@ -26,7 +26,7 @@
     }
 
     .nav-toggle {
-      position: fixed;
+      position: absolute;
       top: 13px;
       left: 13px;
       width: 36px;
@@ -312,24 +312,25 @@ Tap the popcorn to view your movies, or click below to explore more vibes.
     });
 
     const sampleMovies = [
-  { title: "After Hours", year: "1985", decade: "1980s", palette: "Neon green and shadow grey", desc: "SoHo panic, late-night dread, fluorescent grit." },
-  { title: "The Panic in Needle Park", year: "1971", decade: "1970s", palette: "Overcast grey and subway tile white", desc: "Bleak Upper West Side realism with cold daylight." },
-  { title: "Desperately Seeking Susan", year: "1985", decade: "1980s", palette: "Coney Island teal and hairspray pink", desc: "Downtown club flair with scrappy magic hour glow." },
-  { title: "The Taking of Pelham One Two Three", year: "1974", decade: "1970s", palette: "Metro green and dirty yellow", desc: "Claustrophobic subway tension meets tan bureaucracy." },
-  { title: "Eyes of Laura Mars", year: "1978", decade: "1970s", palette: "Glam red and concrete black", desc: "Studio chic meets grimy Fashion District edge." },
-  { title: "Smithereens", year: "1982", decade: "1980s", palette: "Faded denim blue and trash can silver", desc: "Grimy punk aesthetics in pre-gentrified Lower East Side." },
-  { title: "C.H.U.D.", year: "1984", decade: "1980s", palette: "Sewer green and flashlight white", desc: "Subterranean horror under Manhattan's abandoned streets." },
-  { title: "Saturday Night Fever", year: "1977", decade: "1970s", palette: "Disco white and club neon", desc: "Glittering nightlife vibes from Brooklyn to Manhattan." },
-  { title: "Crooklyn", year: "1994", decade: "1970s", palette: "Orange soda and brownstone brick", desc: "Family warmth framed by Bed-Stuy's nostalgic tones." },
-  { title: "Maniac", year: "1980", decade: "1980s", palette: "Slasher red and alleyway grey", desc: "Grimy Times Square horror with nightmarish color." },
-  { title: "Midnight Cowboy", year: "1969", decade: "1960s", palette: "Dusty beige and neon motel pink", desc: "Desperate dreams and loneliness on 42nd Street." },
-  { title: "Frances Ha", year: "2012", decade: "2010s", palette: "Monochrome", desc: "Floating through a romanticized black-and-white New York." },
-  { title: "Party Girl", year: "1995", decade: "1990s", palette: "Librarian grey and rave yellow", desc: "Underground club energy and high-contrast fashion." },
-  { title: "Uncut Gems", year: "2019", decade: "2010s", palette: "Jeweler's gold and panic red", desc: "Diamond District chaos with cinematic tension." },
-  { title: "The Royal Tenenbaums", year: "2001", decade: "2000s", palette: "Vintage red tracksuit and tan brick", desc: "Whimsical symmetry and upper-crust melancholy." }
-];
+      { title: "Liquid Sky", year: "1982", decade: "1980s", desc: "Neon-drenched punk surrealism with harsh primary colors, stark geometric makeup, and crystalline sci-fi textures creating an alien downtown art scene" },
+      { title: "Desperately Seeking Susan", year: "1985", decade: "1980s", desc: "Vibrant downtown bohemian chaos with layered vintage textures, warm golden lighting, and eclectic thrift-store maximalism" },
+      { title: "Basquiat", year: "1996", decade: "1980s", desc: "Raw artistic authenticity with paint-splattered loft spaces, warm amber gallery lighting, and gritty creative disorder" },
+      { title: "After Hours", year: "1985", decade: "1980s", desc: "Surreal nocturnal nightmare with harsh fluorescent whites, deep shadow contrasts, and claustrophobic urban maze aesthetics" },
+      { title: "Party Girl", year: "1995", decade: "1990s", desc: "Glossy club-kid excess with strobing dance floor lights, metallic fashion textures, and high-energy nightlife glamour" },
+      { title: "Alphabet City", year: "1984", decade: "1980s", desc: "Gritty street-level realism with weathered brick textures, amber streetlight glow, and shadowy urban decay" },
+      { title: "200 Cigarettes", year: "1999", decade: "1980s", desc: "Retro New Year's Eve nostalgia with warm party lighting, vintage costume textures, and celebratory urban energy" },
+      { title: "Slaves of New York", year: "1989", decade: "1980s", desc: "Artsy downtown minimalism with stark white gallery spaces, muted fashion palettes, and bohemian creative poverty" },
+      { title: "American Psycho", year: "2000", decade: "1980s", desc: "Sterile corporate minimalism with razor-sharp geometric precision, clinical high-end luxury surfaces, and pristine architectural coldness" },
+      { title: "The Driller Killer", year: "1979", decade: "1970s", desc: "Raw guerrilla filmmaking with grainy 16mm textures, harsh urban lighting, and gritty street-level documentation" },
+      { title: "Cruising", year: "1980", decade: "1970s", desc: "Grimy nocturnal urban underbelly with harsh neon-soaked darkness, claustrophobic dive bar interiors, and sweat-drenched leather textures" },
+      { title: "Serendipity", year: "2001", decade: "2000s", desc: "Romantic golden-hour warmth with soft café lighting, cozy winter textures, and whimsical urban charm" },
+      { title: "Scrooged", year: "1988", decade: "1980s", desc: "Glitzy corporate excess with blazing television studio artificiality, over-the-top holiday kitsch, and increasingly surreal visual chaos" },
+      { title: "The Secret of My Success", year: "1987", decade: "1980s", desc: "Slick corporate glamour with gleaming Manhattan office towers, polished power-suit sophistication, and energetic montage-driven pacing" },
+      { title: "Taxi Driver", year: "1976", decade: "1970s", desc: "Neon-soaked urban alienation with steam-hazed streets, amber-filtered cab windows, and the hypnotic glow of Times Square's seedy underbelly" }
+    ];
+    
     let currentIndex = 0;
-    const maxCards = 15;
+    const maxCards = 15; // Updated to match the number of movies
     const cardStack = document.getElementById("card-stack");
     const watchlistLink = document.getElementById("watchlist-link");
 
@@ -341,7 +342,6 @@ Tap the popcorn to view your movies, or click below to explore more vibes.
           <div class="card-content">
             <h1>${movie.title} (${movie.year})</h1>
             <h2>${movie.decade}</h2>
-            <h3>${movie.palette}</h3>
             <p>${movie.desc}</p>
           </div>
           <div class="icon-container">

@@ -29,7 +29,7 @@
     }
 
     .nav-toggle {
-      position: fixed;
+      position: absolute;
       top: 13px;
       left: 13px;
       width: 36px;
@@ -77,7 +77,7 @@
       line-height: 1.5;
       margin: 0 0 15px 0;
       color: #000;
-      white-space: pre-wrap;
+      white-space: normal;
       text-align: center;
     }
 
@@ -177,11 +177,20 @@
     .notification {
       max-width: 480px;
       margin: 10px auto 0 auto;
-      color: #000;
+      background-color: #000;
+      color: #f6f5f3;
       font-weight: normal;
       font-size: 14px;
       text-align: center;
       display: none;
+      padding: 8px 16px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+    
+    .notification:hover {
+      background-color: #333;
     }
 
     .submit-button {
@@ -199,6 +208,12 @@
       height: 100%;
       display: block;
       object-fit: contain;
+    }
+
+    .submit-disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      pointer-events: none;
     }
 
     /* Navigation styling copied from color.html */
@@ -288,8 +303,10 @@
     <img src="Words Header.png" alt="Words Header" class="header-words" />
 
     <p class="body-text">
-      Select or type up to 10 words to describe your vibe.
+      Choose up to 10 words for the vibe you want to watch.
     </p>
+
+    <div id="notification" class="notification" role="alert" aria-live="assertive"></div>
 
     <div class="tag-input-container" tabindex="0" aria-label="Word selector input area" id="tagInputContainer">
       <input type="text" id="tagInput" class="tag-input" placeholder="Type or select words..." aria-describedby="notification" aria-autocomplete="list" autocomplete="off" />
@@ -298,10 +315,8 @@
 
     <ul class="word-list" id="wordList" aria-label="Available words"></ul>
 
-    <div id="notification" class="notification" role="alert" aria-live="assertive"></div>
-
-    <a href="cards.html">
-      <img src="Submit Button.png" alt="Submit Button" style="width: 150px; display: block; margin: 20px auto 0;" />
+    <a href="cards.html" id="submitLink">
+      <img src="Submit Button.png" alt="Submit Button" style="width: 150px; display: block; margin: 20px auto 0;" id="submitButton" />
     </a>
   </main>
 
@@ -345,6 +360,8 @@
     const wordList = document.getElementById('wordList');
     const notification = document.getElementById('notification');
     const selectedTagsText = document.getElementById('selectedTagsText');
+    const submitLink = document.getElementById('submitLink');
+    const submitButton = document.getElementById('submitButton');
 
     const maxTags = 10;
 
@@ -370,6 +387,16 @@
 ];
 
     let selectedTags = [];
+
+    function updateSubmitButton() {
+      if (selectedTags.length === 0) {
+        submitLink.classList.add('submit-disabled');
+        submitLink.removeAttribute('href');
+      } else {
+        submitLink.classList.remove('submit-disabled');
+        submitLink.setAttribute('href', 'cards.html');
+      }
+    }
 
     function renderWordList() {
       wordList.innerHTML = '';
@@ -404,7 +431,7 @@
 
     function addTag(word) {
       if (selectedTags.length >= maxTags) {
-        notification.textContent = "You've reached the maximum of 10 words. Please submit.";
+        notification.textContent = "Word limit reached. Submit to proceed.";
         notification.style.display = 'block';
         return;
       }
@@ -413,6 +440,7 @@
         notification.textContent = "";
         notification.style.display = 'none';
         updateTagsUI();
+        updateSubmitButton();
       }
     }
 
@@ -421,6 +449,7 @@
       notification.textContent = "";
       notification.style.display = 'none';
       updateTagsUI();
+      updateSubmitButton();
     }
 
     function updateTagsUI() {
@@ -462,7 +491,7 @@
         const inputVal = tagInput.value.trim().toLowerCase();
         if (inputVal && !selectedTags.includes(inputVal)) {
           if (selectedTags.length >= maxTags) {
-            notification.textContent = "You've reached the maximum of 10 words. Please submit.";
+            notification.textContent = "Word limit reached. Submit to proceed.";
             notification.style.display = 'block';
             return;
           }
@@ -470,6 +499,7 @@
           notification.textContent = "";
           notification.style.display = 'none';
           updateTagsUI();
+          updateSubmitButton();
         }
       }
     });
@@ -477,6 +507,14 @@
     tagInputContainer.addEventListener('click', () => tagInput.focus());
 
     renderWordList();
+    updateSubmitButton(); // Initialize submit button state
+
+    // Make notification clickable to submit
+    notification.addEventListener('click', () => {
+      if (notification.style.display === 'block') {
+        window.location.href = 'cards.html';
+      }
+    });
 
     navToggle.addEventListener('click', () => {
       const isOpen = navMenu.classList.toggle('open');
