@@ -382,7 +382,10 @@ Tap the popcorn to view your movies, or click below to explore more vibes.
 
     function swipeLeft(element) {
       const card = element.closest(".card");
-      card.style.transform = "translateX(-120vw) rotate(-20deg) scale(0.8)";
+      card.style.position = "absolute";
+      card.style.top = "50%";
+      card.style.left = "50%";
+      card.style.transform = "translate(-50%, -50%) translateX(-120vw) rotate(-20deg) scale(0.8)";
       card.style.opacity = "0";
       setTimeout(() => card.remove(), 600);
       showNextCard();
@@ -390,7 +393,10 @@ Tap the popcorn to view your movies, or click below to explore more vibes.
 
     function swipeRight(element) {
       const card = element.closest(".card");
-      card.style.transform = "translateX(120vw) rotate(20deg) scale(0.8)";
+      card.style.position = "absolute";
+      card.style.top = "50%";
+      card.style.left = "50%";
+      card.style.transform = "translate(-50%, -50%) translateX(120vw) rotate(20deg) scale(0.8)";
       card.style.opacity = "0";
       setTimeout(() => card.remove(), 600);
       showNextCard();
@@ -420,7 +426,10 @@ Tap the popcorn to view your movies, or click below to explore more vibes.
       const rotation = diffX * 0.1;
       const opacity = Math.max(0.3, 1 - Math.abs(diffX) / 300);
       
-      activeCard.style.transform = `translateX(${diffX}px) rotate(${rotation}deg)`;
+      activeCard.style.position = "absolute";
+      activeCard.style.top = "50%";
+      activeCard.style.left = "50%";
+      activeCard.style.transform = `translate(-50%, -50%) translateX(${diffX}px) rotate(${rotation}deg)`;
       activeCard.style.opacity = opacity;
     }, false);
 
@@ -443,7 +452,10 @@ Tap the popcorn to view your movies, or click below to explore more vibes.
         }
       } else {
         // Snap back to center
-        activeCard.style.transform = 'translateX(0) rotate(0deg)';
+        activeCard.style.position = "relative";
+        activeCard.style.top = "auto";
+        activeCard.style.left = "auto";
+        activeCard.style.transform = 'none';
         activeCard.style.opacity = '1';
       }
     }, false);
