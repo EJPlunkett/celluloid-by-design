@@ -24,7 +24,10 @@
       align-items: center;
       padding: 10px 20px;
       background: transparent;
-      position: relative;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
       z-index: 1100;
       height: 60px;
     }
@@ -122,10 +125,11 @@
       justify-content: center;
       align-items: center;
       position: relative;
-      padding: 0;
+      padding: 80px 0 20px 0;
       overflow: hidden;
-      height: calc(100vh - 60px);
-      height: calc(100dvh - 60px); /* Dynamic viewport height for mobile */
+      height: calc(100vh - 100px);
+      height: calc(100dvh - 100px); /* Dynamic viewport height for mobile */
+      box-sizing: border-box;
     }
 
     .card {
@@ -133,14 +137,12 @@
       border-radius: 24px;
       width: 90vw;
       max-width: 400px;
-      height: calc(100vh - 180px);
-      height: calc(100dvh - 180px); /* Dynamic viewport height for mobile */
-      max-height: calc(100vh - 180px);
-      max-height: calc(100dvh - 180px);
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
+      height: calc(100vh - 240px);
+      height: calc(100dvh - 240px); /* Dynamic viewport height for mobile */
+      max-height: calc(100vh - 240px);
+      max-height: calc(100dvh - 240px);
+      position: relative;
+      margin: 0 auto;
       padding: 16px;
       box-sizing: border-box;
       display: flex;
@@ -255,9 +257,14 @@
       font-size: 14px;
       color: #000;
       text-align: center;
-      padding: 30px 20px 20px;
+      padding: 20px;
       background: #f6f5f3;
       font-style: italic;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 1100;
     }
   </style>
 </head>
@@ -383,7 +390,7 @@ Tap the popcorn to view your movies, or click below to explore more vibes.
 
     function swipeLeft(element) {
       const card = element.closest(".card");
-      card.style.transform = "translate(-50%, -50%) translateX(-120vw) rotate(-20deg) scale(0.8)";
+      card.style.transform = "translateX(-120vw) rotate(-20deg) scale(0.8)";
       card.style.opacity = "0";
       setTimeout(() => card.remove(), 600);
       showNextCard();
@@ -391,7 +398,7 @@ Tap the popcorn to view your movies, or click below to explore more vibes.
 
     function swipeRight(element) {
       const card = element.closest(".card");
-      card.style.transform = "translate(-50%, -50%) translateX(120vw) rotate(20deg) scale(0.8)";
+      card.style.transform = "translateX(120vw) rotate(20deg) scale(0.8)";
       card.style.opacity = "0";
       setTimeout(() => card.remove(), 600);
       showNextCard();
@@ -421,7 +428,7 @@ Tap the popcorn to view your movies, or click below to explore more vibes.
       const rotation = diffX * 0.1;
       const opacity = Math.max(0.3, 1 - Math.abs(diffX) / 300);
       
-      activeCard.style.transform = `translate(-50%, -50%) translateX(${diffX}px) rotate(${rotation}deg)`;
+      activeCard.style.transform = `translateX(${diffX}px) rotate(${rotation}deg)`;
       activeCard.style.opacity = opacity;
     }, false);
 
@@ -444,7 +451,7 @@ Tap the popcorn to view your movies, or click below to explore more vibes.
         }
       } else {
         // Snap back to center
-        activeCard.style.transform = 'translate(-50%, -50%) translateX(0) rotate(0deg)';
+        activeCard.style.transform = 'translateX(0) rotate(0deg)';
         activeCard.style.opacity = '1';
       }
     }, false);
