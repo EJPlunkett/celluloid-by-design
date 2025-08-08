@@ -142,15 +142,17 @@
       transition: all 0.2s ease;
     }
     .movie-header:hover .dropdown-arrow {
-      color: #000;
+      border-left-color: #333;
     }
     .dropdown-arrow {
       margin-right: 12px;
-      font-size: 14px;
-      color: #000;
+      width: 0;
+      height: 0;
+      border-left: 8px solid #000;
+      border-top: 6px solid transparent;
+      border-bottom: 6px solid transparent;
       transition: all 0.3s ease;
-      font-weight: bold;
-      width: 16px;
+      transform-origin: 25% 50%;
     }
     .movie-item.expanded .dropdown-arrow {
       transform: rotate(90deg);
@@ -303,7 +305,7 @@
     <p class="body-text" id="main-text">
       <span id="signed-out-text">
         <em>Your aesthetic, your archive.</em><br><br>
-        <a href="account.html" style="background-color: #000; color: #f6f5f3; text-decoration: none; padding: 4px 12px; border-radius: 20px; font-weight: 500;">Sign In</a> or <a href="create.html" style="background-color: #000; color: #f6f5f3; text-decoration: none; padding: 4px 12px; border-radius: 20px; font-weight: 500;">Create An Account</a> to save your curated watchlist.
+        <a href="account.html" style="background-color: #000; color: #f6f5f3; text-decoration: none; padding: 4px 12px; border-radius: 20px; font-weight: 500;">Sign In</a> or <a href="create.html" style="background-color: #000; color: #f6f5f3; text-decoration: none; padding: 4px 12px; border-radius: 20px; font-weight: 500;">Create An Account</a><br>to save your curated watchlist.
       </span>
       <span id="signed-in-text" style="display: none;">
         <em>Your aesthetic, your archive.</em>
@@ -320,7 +322,7 @@
       <ul class="movie-list">
         <li class="movie-item">
           <div class="movie-header" onclick="toggleMovie(this)">
-            <span class="dropdown-arrow">▶</span>
+            <div class="dropdown-arrow"></div>
             <a href="https://letterboxd.com/film/requiem-for-a-dream/" class="movie-title" target="_blank" onclick="event.stopPropagation()">Requiem for a Dream</a>
             <span class="movie-year">(2000)</span>
           </div>
@@ -330,7 +332,7 @@
         </li>
         <li class="movie-item">
           <div class="movie-header" onclick="toggleMovie(this)">
-            <span class="dropdown-arrow">▶</span>
+            <div class="dropdown-arrow"></div>
             <a href="https://letterboxd.com/film/the-royal-tenenbaums/" class="movie-title" target="_blank" onclick="event.stopPropagation()">The Royal Tenenbaums</a>
             <span class="movie-year">(2001)</span>
           </div>
@@ -340,7 +342,7 @@
         </li>
         <li class="movie-item">
           <div class="movie-header" onclick="toggleMovie(this)">
-            <span class="dropdown-arrow">▶</span>
+            <div class="dropdown-arrow"></div>
             <a href="https://letterboxd.com/film/midnight-cowboy/" class="movie-title" target="_blank" onclick="event.stopPropagation()">Midnight Cowboy</a>
             <span class="movie-year">(1969)</span>
           </div>
@@ -358,7 +360,7 @@
       <ul class="movie-list">
         <li class="movie-item">
           <div class="movie-header" onclick="toggleMovie(this)">
-            <span class="dropdown-arrow">▶</span>
+            <div class="dropdown-arrow"></div>
             <a href="https://letterboxd.com/film/her/" class="movie-title" target="_blank" onclick="event.stopPropagation()">Her</a>
             <span class="movie-year">(2013)</span>
           </div>
@@ -368,7 +370,7 @@
         </li>
         <li class="movie-item">
           <div class="movie-header" onclick="toggleMovie(this)">
-            <span class="dropdown-arrow">▶</span>
+            <div class="dropdown-arrow"></div>
             <a href="https://letterboxd.com/film/lost-in-translation/" class="movie-title" target="_blank" onclick="event.stopPropagation()">Lost in Translation</a>
             <span class="movie-year">(2003)</span>
           </div>
@@ -378,7 +380,7 @@
         </li>
         <li class="movie-item">
           <div class="movie-header" onclick="toggleMovie(this)">
-            <span class="dropdown-arrow">▶</span>
+            <div class="dropdown-arrow"></div>
             <a href="https://letterboxd.com/film/taxi-driver/" class="movie-title" target="_blank" onclick="event.stopPropagation()">Taxi Driver</a>
             <span class="movie-year">(1976)</span>
           </div>
@@ -392,7 +394,7 @@
       <ul class="movie-list">
         <li class="movie-item">
           <div class="movie-header" onclick="toggleMovie(this)">
-            <span class="dropdown-arrow">▶</span>
+            <div class="dropdown-arrow"></div>
             <a href="https://letterboxd.com/film/birdman/" class="movie-title" target="_blank" onclick="event.stopPropagation()">Birdman</a>
             <span class="movie-year">(2014)</span>
           </div>
@@ -402,7 +404,7 @@
         </li>
         <li class="movie-item">
           <div class="movie-header" onclick="toggleMovie(this)">
-            <span class="dropdown-arrow">▶</span>
+            <div class="dropdown-arrow"></div>
             <a href="https://letterboxd.com/film/frances-ha/" class="movie-title" target="_blank" onclick="event.stopPropagation()">Frances Ha</a>
             <span class="movie-year">(2012)</span>
           </div>
@@ -412,7 +414,7 @@
         </li>
         <li class="movie-item">
           <div class="movie-header" onclick="toggleMovie(this)">
-            <span class="dropdown-arrow">▶</span>
+            <div class="dropdown-arrow"></div>
             <a href="https://letterboxd.com/film/do-the-right-thing/" class="movie-title" target="_blank" onclick="event.stopPropagation()">Do the Right Thing</a>
             <span class="movie-year">(1989)</span>
           </div>
@@ -430,7 +432,7 @@
       <ul class="movie-list">
         <li class="movie-item">
           <div class="movie-header" onclick="toggleMovie(this)">
-            <span class="dropdown-arrow">▶</span>
+            <div class="dropdown-arrow"></div>
             <a href="https://letterboxd.com/film/the-apartment/" class="movie-title" target="_blank" onclick="event.stopPropagation()">The Apartment</a>
             <span class="movie-year">(1960)</span>
           </div>
@@ -440,7 +442,7 @@
         </li>
         <li class="movie-item">
           <div class="movie-header" onclick="toggleMovie(this)">
-            <span class="dropdown-arrow">▶</span>
+            <div class="dropdown-arrow"></div>
             <a href="https://letterboxd.com/film/inside-llewyn-davis/" class="movie-title" target="_blank" onclick="event.stopPropagation()">Inside Llewyn Davis</a>
             <span class="movie-year">(2013)</span>
           </div>
