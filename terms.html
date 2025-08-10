@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Terms of Service - Celluloid by Design</title>
+  <style>
+    @font-face {
+      font-family: 'BLANKA';
+      src: url('BLANKA.otf') format('opentype');
+      font-weight: normal;
+      font-style: normal;
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background-color: #f6f5f3;
+      overflow-x: hidden;
+    }
+    body {
+      font-family: Arial, sans-serif;
+      color: #000;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    header {
+      display: flex;
+      align-items: center;
+      padding: 10px 20px;
+      height: auto;
+      background: transparent;
+      position: relative;
+      z-index: 1100;
+    }
+    /* Hamburger toggle button */
+    .nav-toggle {
+      position: absolute;
+      top: 13px;
+      left: 13px;
+      width: 36px;
+      height: 30px;
+      cursor: pointer;
+      z-index: 1200;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      background: transparent;
+      border-radius: 6px;
+      box-shadow: none;
+      border: none;
+      padding: 0;
+    }
+    .nav-toggle span {
+      display: block;
+      height: 4px;
+      background: #000;
+      border-radius: 2px;
+      width: 100%;
+      transition: all 0.3s ease;
+    }
+    main.container {
+      max-width: 480px;
+      margin: 0 auto 60px;
+      padding: 0 20px;
+      flex-grow: 1;
+      text-align: left;
+    }
+    .page-title {
+      font-family: 'BLANKA', Arial, sans-serif;
+      font-size: 36px;
+      font-weight: normal;
+      margin: 40px 0 30px 0;
+      text-align: left;
+      color: #000;
+    }
+    .section-title {
+      font-size: 20px;
+      font-weight: 600;
+      margin: 30px 0 15px 0;
+      color: #000;
+    }
+    .section-title:first-of-type {
+      margin-top: 0;
+    }
+    .content-text {
+      font-weight: 300;
+      font-size: 16px;
+      line-height: 1.6;
+      margin: 0 0 15px 0;
+      color: #000;
+    }
+    .content-list {
+      font-weight: 300;
+      font-size: 16px;
+      line-height: 1.6;
+      margin: 0 0 15px 0;
+      padding-left: 20px;
+      color: #000;
+    }
+    .content-list li {
+      margin-bottom: 8px;
+    }
+    .effective-date {
+      font-weight: 300;
+      font-size: 14px;
+      font-style: italic;
+      margin: 0 0 20px 0;
+      color: #666;
+      text-align: left;
+    }
+    .contact-email {
+      color: #000;
+      text-decoration: underline;
+    }
+    .contact-email:hover {
+      text-decoration: none;
+    }
+    footer {
+      font-size: 14px;
+      color: #000;
+      text-align: center;
+      padding: 20px;
+      user-select: none;
+      background: #f6f5f3;
+    }
+    footer .credit {
+      margin-top: 8px;
+      font-style: italic;
+    }
+
+    /* Navigation Overlay Styles */
+    .nav-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 320px;
+      height: 100vh;
+      background-color: #f6f5f3;
+      border: 10px solid #000;
+      border-radius: 0 20px 20px 0;
+      box-sizing: border-box;
+      box-shadow: none;
+      transform: translateX(calc(-100% - 20px));
+      transition: transform 0.3s ease;
+      z-index: 1050;
+      padding: 20px 20px 40px 40px;
+      overflow-y: auto;
+    }
+    .nav-overlay.open {
+      transform: translateX(0);
+    }
+    .nav-section-title {
+      height: 30px;
+      width: auto;
+      max-width: 280px;
+      margin-bottom: 16px;
+      cursor: pointer;
+      display: block;
+      object-fit: contain;
+    }
+    .nav-section-title.donate-menu {
+      height: 24px;
+    }
+    .nav-section-title:first-of-type {
+      margin-top: 20px;
+    }
+    .nav-list {
+      list-style: disc inside;
+      padding-left: 0;
+      margin-top: 0;
+      margin-bottom: 30px;
+      font-weight: 400;
+      font-size: 18px;
+    }
+    .nav-list li {
+      margin-bottom: 12px;
+    }
+    .nav-list li a {
+      color: #000;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .nav-list li a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="nav-menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </header>
+
+  <main class="container">
+    <h1 class="page-title" id="terms-of-service">Terms of Service</h1>
+    <p class="effective-date">Effective Date: August 10, 2025</p>
+    
+    <p class="content-text">Welcome to <em>Celluloid by Design</em>. These Terms of Service ("Terms") govern your access to and use of the <em>Celluloid by Design</em> website, mobile application, and related services ("Service"). By using the Service, you agree to these Terms. If you do not agree, do not use the Service.</p>
+
+    <h2 class="section-title">Description of Service</h2>
+    <p class="content-text"><em>Celluloid by Design</em> is a film discovery platform that recommends movies based on visual aesthetics, color palettes, and style preferences. Users can create accounts, save watchlists, and explore curated recommendations.</p>
+
+    <h2 class="section-title">Eligibility</h2>
+    <p class="content-text">You must be at least 13 years old to use the Service. If you are under 18, you must have permission from a parent or legal guardian.</p>
+
+    <h2 class="section-title">User Accounts</h2>
+    <ul class="content-list">
+      <li>You are responsible for keeping your account credentials secure.</li>
+      <li>You are responsible for all activity under your account.</li>
+      <li>You agree to provide accurate and current information when creating your account.</li>
+    </ul>
+
+    <h2 class="section-title">Acceptable Use</h2>
+    <p class="content-text">You agree not to:</p>
+    <ul class="content-list">
+      <li>Copy, distribute, or disclose any part of the Service without prior written consent.</li>
+      <li>Reverse engineer, decompile, or attempt to extract the source code or algorithms of the Service.</li>
+      <li>Use automated systems (including bots or scrapers) without authorization.</li>
+      <li>Use the Service for unlawful purposes.</li>
+    </ul>
+
+    <h2 class="section-title">Intellectual Property</h2>
+    <ul class="content-list">
+      <li>All content, code, design, branding, and functionality are owned by <em>Celluloid by Design</em> and are protected by copyright, trademark, and other laws.</li>
+      <li>You may not use the name, trademarks, or branding without permission.</li>
+    </ul>
+
+    <h2 class="section-title">User Content</h2>
+    <ul class="content-list">
+      <li>You retain ownership of your watchlists and saved preferences.</li>
+      <li>Access to certain features, including the size or number of watchlists you can store, may depend on your account type or subscription plan.</li>
+      <li>By saving content in the Service, you grant a limited license to store, display, and process that content solely to operate the Service.</li>
+    </ul>
+
+    <h2 class="section-title">AI-Generated Content Disclaimer</h2>
+    <p class="content-text">Some movie recommendations, descriptions, or aesthetic matches provided through the Service are generated in whole or in part by artificial intelligence ("AI") systems. AI outputs may contain inaccuracies, omissions, or subjective interpretations. You should not rely solely on these outputs for factual accuracy, and you acknowledge that use of AI-generated content is at your own risk.</p>
+
+    <h2 class="section-title">Fees and Subscription Changes</h2>
+    <p class="content-text">The Service is currently free to use. However, <em>Celluloid by Design</em> may introduce paid subscription plans or fees for certain features in the future. If this happens, advance notice will be provided along with an opportunity to review updated terms before any charges are applied. A free plan will remain available where offered, and users may opt into a paid plan for additional features.</p>
+
+    <h2 class="section-title">Termination</h2>
+    <p class="content-text">Your account may be suspended or terminated at any time if you violate these Terms.</p>
+
+    <h2 class="section-title">Disclaimers and Limitation of Liability</h2>
+    <ul class="content-list">
+      <li>The Service is provided "as is" without warranties of any kind.</li>
+      <li><em>Celluloid by Design</em> is not liable for any loss, damage, or inconvenience arising from use of the Service.</li>
+      <li>No guarantee is made regarding the accuracy or availability of recommendations or third-party data.</li>
+    </ul>
+
+    <h2 class="section-title">Changes to Terms</h2>
+    <p class="content-text">These Terms may be updated from time to time. If material changes are made, notice will be provided by email or through the Service.</p>
+
+    <h2 class="section-title">Contact</h2>
+    <p class="content-text">For questions about these Terms, email: <a href="mailto:hello@celluloidbydesign.com" class="contact-email">hello@celluloidbydesign.com</a></p>
+
+    <h1 class="page-title" id="privacy-policy" style="margin-top: 60px;">Privacy Policy</h1>
+    <p class="effective-date">Effective Date: August 10, 2025</p>
+    
+    <p class="content-text">Your privacy matters to <em>Celluloid by Design</em> ("we," "our," "us"). This Privacy Policy explains how we collect, use, and share information when you use our website, mobile application, and related services ("Service").</p>
+
+    <h2 class="section-title">Information We Collect</h2>
+    <ul class="content-list">
+      <li>We may collect information you provide directly, such as your email address, account credentials, watchlists, search preferences, and any feedback you choose to share.</li>
+      <li>We also collect certain technical information automatically, such as your device type, browser type, IP address, and analytics data through cookies or similar technologies.</li>
+    </ul>
+
+    <h2 class="section-title">How We Use Your Information</h2>
+    <p class="content-text">We use your information to:</p>
+    <ul class="content-list">
+      <li>Provide, operate, and improve the Service.</li>
+      <li>Personalize recommendations and watchlists.</li>
+      <li>Maintain security and prevent misuse.</li>
+      <li>Communicate with you about updates, features, or account matters.</li>
+      <li>Develop and test new features, tools, and services.</li>
+    </ul>
+    <p class="content-text">Some features use AI models to generate recommendations based on your inputs. These models process your input to create results but do not store your personal information beyond what is necessary to operate the feature.</p>
+
+    <h2 class="section-title">Data Sharing</h2>
+    <ul class="content-list">
+      <li>We do not sell your personal information.</li>
+      <li>We may share information with trusted service providers and partners who help us operate, improve, and market the Service. This may include hosting, authentication, analytics, payment processing, or integrations with third-party platforms (for example, to check streaming availability).</li>
+      <li>We may also share aggregated or anonymized data that does not identify you.</li>
+      <li>We may disclose information if required by law, court order, or to protect our rights and safety or that of others.</li>
+    </ul>
+
+    <h2 class="section-title">Data Security</h2>
+    <p class="content-text">We take reasonable measures to protect your information, including encryption in transit and access controls. However, no method of storage or transmission is 100% secure, and you use the Service at your own risk.</p>
+
+    <h2 class="section-title">Your Rights</h2>
+    <p class="content-text">Depending on your location and applicable laws, you may have the right to:</p>
+    <ul class="content-list">
+      <li>Request access to the personal information we hold about you.</li>
+      <li>Request correction of inaccurate information.</li>
+      <li>Request deletion of your personal information.</li>
+    </ul>
+    <p class="content-text">To exercise these rights, contact us at the email below. We may need to verify your identity before fulfilling your request.</p>
+
+    <h2 class="section-title">Cookies and Tracking</h2>
+    <p class="content-text">We use cookies and similar technologies for analytics, performance monitoring, and improving your experience. You can disable cookies in your browser settings, but some features of the Service may not function properly.</p>
+
+    <h2 class="section-title">Data Retention</h2>
+    <p class="content-text">We retain your information for as long as your account is active or as needed to provide the Service. If you delete your account or request deletion, we will remove or anonymize your personal data within a reasonable period, subject to technical and legal limitations.</p>
+
+    <h2 class="section-title">Changes to This Policy</h2>
+    <p class="content-text">We may update this Privacy Policy from time to time. If we make significant changes, we will notify you through the Service or by email before the changes take effect.</p>
+
+    <h2 class="section-title">Contact</h2>
+    <p class="content-text">For questions about this Privacy Policy, <a href="mailto:hello@celluloidbydesign.com" class="contact-email">hello@celluloidbydesign.com</a></p>
+  </main>
+
+  <nav id="nav-menu" class="nav-overlay" aria-hidden="true">
+    <a href="match.html">
+      <img src="Match By.png" alt="Match By" class="nav-section-title" />
+    </a>
+    <ul class="nav-list">
+      <li><a href="vibes.html">Describe a Vibe</a></li>
+      <li><a href="color.html">Pick a Color</a></li>
+      <li><a href="words.html">Choose Keywords</a></li>
+      <li><a href="surprise.html">Surprise Me</a></li>
+    </ul>
+
+    <a href="watchlist.html">
+      <img src="Watchlist.png" alt="Watchlist" class="nav-section-title" />
+    </a>
+    <ul class="nav-list">
+      <li><a href="create.html">Create Account</a></li>
+      <li><a href="account.html">Sign In</a></li>
+    </ul>
+
+    <a href="about.html">
+      <img src="About.png" alt="About" class="nav-section-title" />
+    </a>
+    
+    <a href="donate.html">
+      <img src="donate menu.png" alt="Donate" class="nav-section-title donate-menu" />
+    </a>
+  </nav>
+
+  <footer>
+    <span class="credit">© 2025 <em>Celluloid by Design</em></span>
+  </footer>
+
+  <script>
+    const navToggle = document.querySelector('.nav-toggle');
+    const navMenu = document.getElementById('nav-menu');
+
+    navToggle.addEventListener('click', () => {
+      const isOpen = navMenu.classList.toggle('open');
+      navToggle.setAttribute('aria-expanded', isOpen);
+      navMenu.setAttribute('aria-hidden', !isOpen);
+    });
+  </script>
+</body>
+</html>
