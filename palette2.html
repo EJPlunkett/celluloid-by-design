@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hex Color Palette Viewer</title>
+    <style>
+        body {
+            background-color: #000000;
+            color: #ffffff;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #f9ca24);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 3s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .input-section {
+            margin-bottom: 30px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 25px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+            font-weight: 500;
+        }
+
+        textarea {
+            width: 100%;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            padding: 15px;
+            font-size: 16px;
+            font-family: 'Courier New', monospace;
+            resize: vertical;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #4ecdc4;
+            box-shadow: 0 0 10px rgba(78, 205, 196, 0.3);
+        }
+
+        textarea::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .clear-btn {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+        }
+
+        .clear-btn:hover {
+            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4);
+        }
+
+        .palette-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .color-swatch {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .color-swatch:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(255, 255, 255, 0.1);
+        }
+
+        .color-preview {
+            width: 100%;
+            height: 80px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .color-code {
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            letter-spacing: 1px;
+        }
+
+        .color-name {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.7);
+            font-style: italic;
+        }
+
+        .error-message {
+            background: rgba(255, 107, 107, 0.1);
+            color: #ff6b6b;
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 15px;
+            border-left: 4px solid #ff6b6b;
+            display: none;
+        }
+
+        .copy-notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(78, 205, 196, 0.9);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            transform: translateX(300px);
+            transition: transform 0.3s ease;
+            font-weight: 500;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .copy-notification.show {
+            transform: translateX(0);
+        }
+
+        @media (max-width: 600px) {
+            .palette-container {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+                gap: 15px;
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Color Palette Viewer</h1>
+        
+        <div class="input-section">
+            <label for="colorInput">Enter hex color codes (separated by commas):</label>
+            <textarea 
+                id="colorInput" 
+                placeholder="Example: #8B7355, #2C2C2C, #F5E6D3, #4A5C3A, #D4B896"
+            ></textarea>
+            
+            <div class="button-group">
+                <button onclick="generatePalette()">Generate Palette</button>
+                <button class="clear-btn" onclick="clearPalette()">Clear</button>
+            </div>
+            
+            <div id="errorMessage" class="error-message"></div>
+        </div>
+        
+        <div id="paletteContainer" class="palette-container"></div>
+    </div>
+
+    <div id="copyNotification" class="copy-notification">
+        Color copied to clipboard!
+    </div>
+
+    <script>
+        // Store current colors
+        let currentColors = [];
+
+        function generatePalette() {
+            const input = document.getElementById('colorInput').value;
+            const errorDiv = document.getElementById('errorMessage');
+            const container = document.getElementById('paletteContainer');
+            
+            // Clear previous error
+            errorDiv.style.display = 'none';
+            
+            if (!input.trim()) {
+                showError('Please enter some hex color codes.');
+                return;
+            }
+            
+            // Split by comma and clean up
+            const hexCodes = input.split(',').map(code => code.trim());
+            const validColors = [];
+            const invalidColors = [];
+            
+            hexCodes.forEach(code => {
+                // Add # if missing
+                if (!code.startsWith('#') && code.length >= 3) {
+                    code = '#' + code;
+                }
+                
+                // Validate hex color
+                if (/^#[0-9A-Fa-f]{3}$|^#[0-9A-Fa-f]{6}$/.test(code)) {
+                    validColors.push(code.toUpperCase());
+                } else if (code.trim() !== '') {
+                    invalidColors.push(code);
+                }
+            });
+            
+            if (invalidColors.length > 0) {
+                showError(`Invalid hex codes: ${invalidColors.join(', ')}`);
+                return;
+            }
+            
+            if (validColors.length === 0) {
+                showError('No valid hex codes found.');
+                return;
+            }
+            
+            currentColors = validColors;
+            displayPalette(validColors);
+        }
+        
+        function displayPalette(colors) {
+            const container = document.getElementById('paletteContainer');
+            container.innerHTML = '';
+            
+            colors.forEach(color => {
+                const swatch = document.createElement('div');
+                swatch.className = 'color-swatch';
+                swatch.onclick = () => copyToClipboard(color);
+                
+                const preview = document.createElement('div');
+                preview.className = 'color-preview';
+                preview.style.backgroundColor = color;
+                
+                const code = document.createElement('div');
+                code.className = 'color-code';
+                code.textContent = color;
+                
+                const name = document.createElement('div');
+                name.className = 'color-name';
+                name.textContent = 'Click to copy';
+                
+                swatch.appendChild(preview);
+                swatch.appendChild(code);
+                swatch.appendChild(name);
+                container.appendChild(swatch);
+            });
+        }
+        
+        function clearPalette() {
+            document.getElementById('colorInput').value = '';
+            document.getElementById('paletteContainer').innerHTML = '';
+            document.getElementById('errorMessage').style.display = 'none';
+            currentColors = [];
+        }
+        
+        function showError(message) {
+            const errorDiv = document.getElementById('errorMessage');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+        }
+        
+        function copyToClipboard(color) {
+            navigator.clipboard.writeText(color).then(() => {
+                showCopyNotification();
+            }).catch(() => {
+                // Fallback for browsers that don't support clipboard API
+                const textArea = document.createElement('textarea');
+                textArea.value = color;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                showCopyNotification();
+            });
+        }
+        
+        function showCopyNotification() {
+            const notification = document.getElementById('copyNotification');
+            notification.classList.add('show');
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 2000);
+        }
+        
+        // Allow Enter to generate palette
+        document.getElementById('colorInput').addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.key === 'Enter') {
+                generatePalette();
+            }
+        });
+        
+        // Load example on page load
+        window.addEventListener('load', () => {
+            document.getElementById('colorInput').value = '#8B7355, #2C2C2C, #F5E6D3, #4A5C3A, #D4B896';
+            generatePalette();
+        });
+    </script>
+</body>
+</html>

@@ -36,10 +36,26 @@
       margin-bottom: 60px;
       color: #000;
     }
-    .construction-graphic {
-      width: 200px;
-      height: auto;
+    .angled-line {
+      width: 20px;
+      height: 20px;
+      border-bottom: 3px solid #000;
+      border-right: 3px solid #000;
+      transform: rotate(45deg);
       margin: 0 auto 40px;
+      position: relative;
+    }
+    .go-button {
+  display: block;
+  width: fit-content;
+  max-width: 190px;
+  height: 40px;
+  margin: 0 auto 40px;
+  text-align: center;
+}
+    .go-button img {
+      height: 100%;
+      width: auto;
       display: block;
     }
     footer {
@@ -60,13 +76,16 @@
   <div class="container">
     <img src="Header Logo.png" alt="Celluloid by Design Logo" class="header-logo" />
     <p class="intro-text">
-      A niche film discovery platform in the works, set to launch early fall 2025.
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
     </p>
-    <img src="construction.png" alt="Under Construction" class="construction-graphic" />
+    <div class="angled-line" aria-hidden="true"></div>
+<a href="match.html" class="go-button">
+  <img src="GoButton.png" alt="Give It a Go Button" />
+</a>
   </div>
   <footer>
     © 2025 Celluloid by Design<br />
-    <span class="credit">Designed and developed by Emily Plunkett</span>
+    <span class="credit">Conceptualized and crafted by Emily Plunkett</span>
   </footer>
 </body>
 </html>
